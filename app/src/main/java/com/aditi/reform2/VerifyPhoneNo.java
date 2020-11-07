@@ -140,10 +140,7 @@ public class VerifyPhoneNo extends AppCompatActivity {
                     reference.child(_USERNAME).setValue(helperClass); //child allows us to store multiple users & Phone No. acting as a key for each user
                     Toast.makeText(getApplicationContext() ,"Your Account has been successfully created",Toast.LENGTH_SHORT).show();
 
-                    Intent intent2= new Intent(VerifyPhoneNo.this,UpdateProfile.class);
-                    //Adding flags to prevent the user from simply going back again to verification
-                    intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
+                    Intent intent2= new Intent(VerifyPhoneNo.this,DummyPage.class);
                     startActivity(intent2);
                 }
                 else

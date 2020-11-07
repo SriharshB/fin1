@@ -20,7 +20,7 @@ public class UpdateProfile extends AppCompatActivity {
     //Global variables that will hold the user data inside this UpdateProfile activity
     String _USERNAME,_PASSWORD,_EMAIL,_PROFESSION;
 
-    Button update_btn;
+    Button update_btn,next_btn;
     TextInputEditText username,password,email,profession;
     TextView usernameLabel;
 
@@ -31,27 +31,40 @@ public class UpdateProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_profile);
 
+        reference= FirebaseDatabase.getInstance().getReference("users");//reference now has list of all users
+
         usernameLabel=findViewById(R.id.usernameLabel);
         username=findViewById(R.id.username_profile);
         password=findViewById(R.id.password_profile);
         email=findViewById(R.id.email_profile);
         profession=findViewById(R.id.profession_fill);
 
-        reference= FirebaseDatabase.getInstance().getReference("users");//reference now has list of all users
-
         update_btn=findViewById(R.id.update_btn);
-        update_btn.setOnClickListener(new View.OnClickListener() {
+        next_btn=findViewById(R.id.next_btn);
+
+        showAllUserData();
+
+        update_btn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
 
-                showAllUserData();
                 update(update_btn);
             }
         });
 
+        next_btn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent2= new Intent(UpdateProfile.this,DummyPage.class);
+                startActivity(intent2);
+            }
+        });
     }
 
-    private void showAllUserData()
+    public void showAllUserData() //Function to display all the data in UserProfile after fetching data from database
     {
         Intent intent= getIntent();
         _USERNAME=intent.getStringExtra("username");
@@ -59,10 +72,11 @@ public class UpdateProfile extends AppCompatActivity {
         _EMAIL=intent.getStringExtra("email");
         _PROFESSION=intent.getStringExtra("profession");
 
-        usernameLabel.setText(_USERNAME);
-        password.setText(_PASSWORD);
-        email.setText(_EMAIL);
-        profession.setText(_PROFESSION);
+        ((TextView)findViewById(R.id.usernameLabel)).setText(_USERNAME);
+        ((TextInputEditText)findViewById(R.id.username_profile)).setText(_USERNAME);
+        ((TextInputEditText)findViewById(R.id.password_profile)).setText(_PASSWORD);
+        ((TextInputEditText)findViewById(R.id.email_profile)).setText(_EMAIL);
+        ((TextInputEditText)findViewById(R.id.profession_profile)).setText(_PROFESSION);
     }
 
     public void update(View view)
@@ -77,14 +91,14 @@ public class UpdateProfile extends AppCompatActivity {
         }
 
     }
-
+//DON'T TOUCH/PLAY WITH THIS
     private boolean isPasswordChanged() {
 
         if( !_PASSWORD.equals(password.getText().toString()) )
         {
             //update the password and return true
-            reference.child(_USERNAME).child("password").setValue(password.getText().toString()); //update the value of username
-            _PASSWORD=password.getText().toString();
+           // reference.child(_USERNAME).child("password").setValue(password.getText().toString()); //update the value of username
+           // _PASSWORD =password.getText().toString();
             return true;
         }
         else
@@ -92,14 +106,14 @@ public class UpdateProfile extends AppCompatActivity {
             return false;
         }
     }
-
+//DON'T TOUCH/PLAY WITH THIS
     private boolean isNameChanged() {
 
         if( !_USERNAME.equals(username.getText().toString()) )
         {
             //update the username and return true
-            reference.child(_USERNAME).child("name").setValue(username.getText().toString()); //update the value of username
-            _USERNAME=username.getText().toString();
+            //reference.child(_USERNAME).child("username").setValue(username.getText().toString()); //update the value of username
+            //_USERNAME =username.getText().toString();
             return true;
         }
         else

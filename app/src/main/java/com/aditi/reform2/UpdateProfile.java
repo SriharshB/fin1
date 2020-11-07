@@ -21,7 +21,7 @@ public class UpdateProfile extends AppCompatActivity {
     String _USERNAME,_PASSWORD,_EMAIL,_PROFESSION;
 
     Button update_btn;
-    TextInputLayout username,password,email,profession;
+    TextInputEditText username,password,email,profession;
     TextView usernameLabel;
 
     DatabaseReference reference;
@@ -48,6 +48,7 @@ public class UpdateProfile extends AppCompatActivity {
                 update(update_btn);
             }
         });
+
     }
 
     private void showAllUserData()
@@ -59,9 +60,9 @@ public class UpdateProfile extends AppCompatActivity {
         _PROFESSION=intent.getStringExtra("profession");
 
         usernameLabel.setText(_USERNAME);
-        password.getEditText().setText(_PASSWORD);
-        email.getEditText().setText(_EMAIL);
-        profession.getEditText().setText(_PROFESSION);
+        password.setText(_PASSWORD);
+        email.setText(_EMAIL);
+        profession.setText(_PROFESSION);
     }
 
     public void update(View view)
@@ -79,11 +80,11 @@ public class UpdateProfile extends AppCompatActivity {
 
     private boolean isPasswordChanged() {
 
-        if( !_PASSWORD.equals(password.getEditText().getText().toString()) )
+        if( !_PASSWORD.equals(password.getText().toString()) )
         {
             //update the password and return true
-            reference.child(_USERNAME).child("password").setValue(password.getEditText().getText().toString()); //update the value of username
-            _PASSWORD=password.getEditText().getText().toString();
+            reference.child(_USERNAME).child("password").setValue(password.getText().toString()); //update the value of username
+            _PASSWORD=password.getText().toString();
             return true;
         }
         else
@@ -94,11 +95,11 @@ public class UpdateProfile extends AppCompatActivity {
 
     private boolean isNameChanged() {
 
-        if( !_USERNAME.equals(username.getEditText().getText().toString()) )
+        if( !_USERNAME.equals(username.getText().toString()) )
         {
             //update the username and return true
-            reference.child(_USERNAME).child("name").setValue(username.getEditText().getText().toString()); //update the value of username
-            _USERNAME=username.getEditText().getText().toString();
+            reference.child(_USERNAME).child("name").setValue(username.getText().toString()); //update the value of username
+            _USERNAME=username.getText().toString();
             return true;
         }
         else

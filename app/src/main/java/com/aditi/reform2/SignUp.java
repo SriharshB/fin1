@@ -47,8 +47,8 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                rootNode= FirebaseDatabase.getInstance();
-                reference=rootNode.getReference("users");
+                //rootNode= FirebaseDatabase.getInstance();
+                //reference=rootNode.getReference("users");
                 registerUser(regBtn);
             }
         });
@@ -180,8 +180,14 @@ public class SignUp extends AppCompatActivity {
         String profession =regProfession.getEditText().getText().toString();
         String password =regPassword.getEditText().getText().toString();
 
+
+        //Send the details to VerifyPhoneNo. activity to finally register in database after phone verifcation
         Intent intent= new Intent(SignUp.this,VerifyPhoneNo.class);
         intent.putExtra("phoneNo",phoneNo); //send this phone no. to verify phone no. activity
+        intent.putExtra("email",email);
+        intent.putExtra("username",username);
+        intent.putExtra("profession",profession);
+        intent.putExtra("password",password);
         startActivity(intent);
 
         //UserHelperClass helperClass= new UserHelperClass(username,phoneNo,email,profession,password);

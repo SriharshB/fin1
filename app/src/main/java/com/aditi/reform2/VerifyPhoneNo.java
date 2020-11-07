@@ -21,6 +21,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.concurrent.TimeUnit;
 
@@ -32,8 +34,13 @@ public class VerifyPhoneNo extends AppCompatActivity {
     private FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
     String verificationCodeBySystem;
 
+    FirebaseDatabase rootNode;
+    DatabaseReference reference;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verify_phone_no);
 
@@ -99,7 +106,6 @@ public class VerifyPhoneNo extends AppCompatActivity {
         @Override
         public void onVerificationFailed(@NonNull FirebaseException e) //when verification fails
         {
-
             Toast.makeText(VerifyPhoneNo.this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     };
@@ -119,11 +125,26 @@ public class VerifyPhoneNo extends AppCompatActivity {
 
                 if(task.isSuccessful())
                 {
-                    Intent intent= new Intent(VerifyPhoneNo.this,UpdateProfile.class);
-                    //Adding flags to prevent the user from simply going back again to verification
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    //Get details from SignUp/Registration Page & register user if task is successful
+                    Intent intent= getIntent();
+                    String _USERNAME = intent.getStringExtra("username");
+                    String _PASSWORD = intent.getStringExtra("password");
+                    String _EMAIL=intent.getStringExtra("email");
+                    String _PROFESSION=intent.getStringExtra("profession");
+                    String _PHONENO=intent.getStringExtra("phoneNo");
 
-                    startActivity(intent);
+                    rootNode= FirebaseDatabase.getInstance();
+                    reference=rootNode.getReference("users");
+
+                    UserHelperClass helperClass= new UserHelperClass(_USERNAME,_PHONENO,_EMAIL,_PROFESSION,_PASSWORD);
+                    reference.child(_USERNAME).setValue(helperClass); //child allows us to store multiple users & Phone No. acting as a key for each user
+                    Toast.makeText(getApplicationContext() ,"Your Account has been successfully created",Toast.LENGTH_SHORT).show();
+
+                    Intent intent2= new Intent(VerifyPhoneNo.this,UpdateProfile.class);
+                    //Adding flags to prevent the user from simply going back again to verification
+                    intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
+                    startActivity(intent2);
                 }
                 else
                 {

@@ -125,9 +125,8 @@ public class Login extends AppCompatActivity {
 
                         Intent intent= new Intent(Login.this,UpdateProfile.class);
 
-                        intent.putExtra("username",usernameFromDB);
+                        intent.putExtra("username",usernameFromDB); //keyName and the value passed to UpdateProfile
                         intent.putExtra("email",emailFromDB);
-                        intent.putExtra("phoneNo",phoneNoFromDB);
                         intent.putExtra("profession",professionFromDB);
                         intent.putExtra("password",passwordFromDB);
 
